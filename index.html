@@ -1,0 +1,94 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Network Division</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <script src="script.js" defer></script>
+    <script src="algorithm.js" defer></script>
+  </head>
+  <body onload="innerTarget()">
+    <main class="flex-container">
+      <section id="algorythm-data" class="form-container">
+        <form onsubmit="onResolve(); return false" autocomplete="off">
+          <div class="long-input-container">
+            <input type="text" id="IPv4" class="long-input" required />
+            <label for="IPv4" class="absolute-label">IPv4</label>
+          </div>
+          <div class="long-input-container">
+            <input type="text" id="network-mask" class="long-input" required />
+            <label for="network-mask" class="absolute-label"
+              >Network Mask</label
+            >
+          </div>
+          <ul id="targets">
+            <li>
+              <div class="tAdd-container">
+                <input
+                  type="button"
+                  id="tAdd"
+                  onclick="innerTarget()"
+                  value="+"
+                />
+              </div>
+            </li>
+          </ul>
+          <div class="flex-container radio-container">
+            <div>
+              <label for="max->min">Max --> Min</label>
+              <input
+                type="radio"
+                name="min-max"
+                id="max->min"
+                required
+                checked
+              />
+            </div>
+            <div>
+              <label for="min->max">Min --> Max</label>
+              <input type="radio" name="min-max" id="min->max" required />
+            </div>
+            <label class="absolute-label">Size sort</label>
+          </div>
+          <div class="flex-container radio-container">
+            <div>
+              <label for="a->z">A --> Z</label>
+              <input type="radio" name="a-z" id="a->z" required checked />
+            </div>
+            <div>
+              <label for="z->a">Z --> A</label>
+              <input type="radio" name="a-z" id="z->a" required />
+            </div>
+            <label class="absolute-label">Lex sort</label>
+          </div>
+          <div class="flex-container"></div>
+          <div class="flex-container">
+            <input type="submit" value="RESOLVE" />
+          </div>
+        </form>
+      </section>
+      <section id="result" class="flex-container" style="display: none">
+        <input
+          type="button"
+          id="result-close"
+          class="close-button"
+          value="X"
+          onclick="closeResult()"
+        />
+        <table>
+          <thead>
+            <tr>
+              <td>Subnet name</td>
+              <td>Minimum interfaces</td>
+              <td>Subnet Address</td>
+              <td>Broadcast Address</td>
+              <td>Mask length</td>
+              <td>Network size</td>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </main>
+  </body>
+</html>
