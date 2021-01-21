@@ -1,7 +1,6 @@
 const targets = document.getElementById('targets');
 const resultContainer = document.getElementById('result');
 const pasteMultipleContainer = document.getElementById('paste-multiple');
-pasteMultipleContainer.tabIndex = 0;
 
 const onResolve = () => {
   const { value: ipV4 } = document.getElementById('IPv4');
@@ -102,7 +101,6 @@ const reloadTargets = () => {
   const nodesToRemove = [];
   for (let i = 0; i < targets.children.length; i++) {
     const id = targets.children[i].id;
-    console.log(id);
     if (id) nodesToRemove.push(targets.children[i]);
   }
 
@@ -111,24 +109,34 @@ const reloadTargets = () => {
   });
 };
 
+let isPasteMultipleEnabled = false;
 const showMultiple = () => {
   pasteMultipleContainer.style.display = 'flex';
-  pasteMultipleContainer.focus();
+  isPasteMultipleEnabled = true;
 };
 
 const closeMultiple = () => {
   pasteMultipleContainer.style.display = 'none';
+  isPasteMultipleEnabled = false;
 };
 
-pasteMultipleContainer.addEventListener('paste', (e) => {
-  console.log('here');
+window.addEventListener('paste', (e) => {
+  if (!isPasteMultipleEnabled) {
+    return;
+  }
+
   e.stopPropagation();
   e.preventDefault();
+
+  const error = () => {
+    alert('Wrong date format try: (A,44),(B,55) ...');
+    closeMultiple();
+  };
 
   const clipboardData = e.clipboardData || window.clipboardData;
   const pastedData = clipboardData.getData('Text');
 
-  if (!pastedData) closeMultiple();
+  if (!pastedData) error();
 
   const rSplitted = pastedData
     .split(')')
@@ -148,7 +156,7 @@ pasteMultipleContainer.addEventListener('paste', (e) => {
     })
     .map((val) => val.split(','));
 
-  if (!rSplitted || rSplitted.length === 0) return closeMultiple();
+  if (!rSplitted || rSplitted.length === 0) return error();
 
   reloadTargets();
   rSplitted.forEach((arr) => {
