@@ -6,7 +6,7 @@
 * Value - number of target network cards
 
 * \+ - adds new empty target
-* X - removes selected target
+* x - removes selected target
 * ∞ - multi-paste targets option
 
 * Size sort - specifies the order in which addresses should be assigned by its size
