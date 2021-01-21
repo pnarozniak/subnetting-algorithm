@@ -1,6 +1,7 @@
 const targets = document.getElementById('targets');
 const resultContainer = document.getElementById('result');
 const pasteMultipleContainer = document.getElementById('paste-multiple');
+pasteMultipleContainer.tabIndex = 0;
 
 const onResolve = () => {
   const { value: ipV4 } = document.getElementById('IPv4');
@@ -112,7 +113,6 @@ const reloadTargets = () => {
 
 const showMultiple = () => {
   pasteMultipleContainer.style.display = 'flex';
-  pasteMultipleContainer.tabIndex = 0;
   pasteMultipleContainer.focus();
 };
 
@@ -121,13 +121,14 @@ const closeMultiple = () => {
 };
 
 pasteMultipleContainer.addEventListener('paste', (e) => {
+  console.log('here');
   e.stopPropagation();
   e.preventDefault();
 
   const clipboardData = e.clipboardData || window.clipboardData;
   const pastedData = clipboardData.getData('Text');
 
-  if (!pastedData) return;
+  if (!pastedData) closeMultiple();
 
   const rSplitted = pastedData
     .split(')')
@@ -147,7 +148,7 @@ pasteMultipleContainer.addEventListener('paste', (e) => {
     })
     .map((val) => val.split(','));
 
-  if (!rSplitted || rSplitted.length === 0) return;
+  if (!rSplitted || rSplitted.length === 0) return closeMultiple();
 
   reloadTargets();
   rSplitted.forEach((arr) => {
