@@ -1,5 +1,6 @@
 const targets = document.getElementById('targets');
 const resultContainer = document.getElementById('result');
+const pasteMultipleContainer = document.getElementById('paste-multiple');
 
 const onResolve = () => {
   const { value: ipV4 } = document.getElementById('IPv4');
@@ -109,12 +110,24 @@ const reloadTargets = () => {
   });
 };
 
-window.addEventListener('paste', (e) => {
+const showMultiple = () => {
+  pasteMultipleContainer.style.display = 'flex';
+  pasteMultipleContainer.tabIndex = 0;
+  pasteMultipleContainer.focus();
+};
+
+const closeMultiple = () => {
+  pasteMultipleContainer.style.display = 'none';
+};
+
+pasteMultipleContainer.addEventListener('paste', (e) => {
   e.stopPropagation();
   e.preventDefault();
 
   const clipboardData = e.clipboardData || window.clipboardData;
   const pastedData = clipboardData.getData('Text');
+
+  if (!pastedData) return;
 
   const rSplitted = pastedData
     .split(')')
@@ -134,8 +147,9 @@ window.addEventListener('paste', (e) => {
     })
     .map((val) => val.split(','));
 
-  reloadTargets();
+  if (!rSplitted || rSplitted.length === 0) return;
 
+  reloadTargets();
   rSplitted.forEach((arr) => {
     const target = innerTarget();
     const tValue = target.querySelector('#tValue');
@@ -144,4 +158,6 @@ window.addEventListener('paste', (e) => {
     tName.value = arr[0];
     tValue.value = parseInt(arr[1]);
   });
+
+  closeMultiple();
 });

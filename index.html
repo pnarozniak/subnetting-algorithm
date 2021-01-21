@@ -30,6 +30,12 @@
                   onclick="innerTarget()"
                   value="+"
                 />
+                <input
+                  type="button"
+                  id="tMultiple"
+                  onclick="showMultiple()"
+                  value="∞"
+                />
               </div>
             </li>
           </ul>
@@ -67,6 +73,7 @@
           </div>
         </form>
       </section>
+
       <section id="result" class="flex-container" style="display: none">
         <input
           type="button"
@@ -88,6 +95,20 @@
           </thead>
           <tbody></tbody>
         </table>
+      </section>
+
+      <section
+        id="paste-multiple"
+        class="flex-container paste-multiple-container"
+      >
+        <input
+          type="button"
+          id="close-multiple-button"
+          class="close-button"
+          value="X"
+          onclick="closeMultiple()"
+        />
+        <p>Paste algorythm data (ctrl+v)</p>
       </section>
     </main>
   </body>

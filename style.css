@@ -116,12 +116,11 @@ input[type='button'] {
   outline: none;
 }
 
+.close-button {
+  border: 1px solid indianred;
+}
 .close-button:hover {
   background-color: indianred !important;
-}
-
-#tRemove {
-  border: 1px solid indianred;
 }
 
 .tAdd-container {
@@ -130,14 +129,21 @@ input[type='button'] {
   margin-bottom: 3rem;
 }
 
-#tAdd {
+.tAdd-container input {
   position: absolute;
-  right: 7px;
   font-size: 1.7em;
   border: 1px solid #2ecc71;
 }
 
-#tAdd:hover {
+#tAdd {
+  right: 7px;
+}
+
+#tMultiple {
+  right: 70px;
+}
+
+.tAdd-container input:hover {
   background-color: #2ecc71;
 }
 
@@ -199,6 +205,31 @@ tbody td {
 .radio-container label,
 .radio-container input[type='radio'] {
   cursor: pointer;
+}
+
+.paste-multiple-container {
+  background-color: #11161bd2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: none;
+  text-align: center;
+}
+
+.paste-multiple-container p {
+  color: rgba(255, 255, 255, 0.794);
+  font-size: 3em;
+}
+
+#close-multiple-button {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  width: 40px !important;
+  background-color: transparent;
+  color: white;
 }
 
 @media only screen and (max-width: 600px) {
