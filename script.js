@@ -43,7 +43,7 @@ const innerTarget = () => {
     if (id == '2') {
       targetName = `
       <div style="position: relative" id="test">
-        <input type="text" id="tName" onpaste="nameInputPaste(event)" required>
+        <input type="text" id="tName" required>
         <label for="tName" class="absolute-label">Name</label>
       </div>`;
       targetValue = `
@@ -52,7 +52,7 @@ const innerTarget = () => {
         <label for="tValue" class="absolute-label">Value</label>
       </div>`;
     } else {
-      targetName = `<input type="text" id="tName" onpaste="nameInputPaste(event)" required>`;
+      targetName = `<input type="text" id="tName" required>`;
       targetValue = `<input type="number" id="tValue" required>`;
     }
 
@@ -64,6 +64,8 @@ const innerTarget = () => {
 
   const target = createTarget();
   targets.insertBefore(target, document.getElementById('tAdd').closest('li'));
+
+  return target;
 };
 
 const removeTarget = (src) => {
@@ -94,28 +96,52 @@ const closeResult = () => {
   resultContainer.querySelector('tbody').innerHTML = '';
 };
 
-const nameInputPaste = (e) => {
-  setTimeout(() => {
-    const { target } = e;
-    let { value } = target;
-    const lIndex = value.indexOf('(');
-    const rIndex = value.indexOf(')');
+const reloadTargets = () => {
+  const nodesToRemove = [];
+  for (let i = 0; i < targets.children.length; i++) {
+    const id = targets.children[i].id;
+    console.log(id);
+    if (id) nodesToRemove.push(targets.children[i]);
+  }
 
-    value = value.substring(lIndex, rIndex);
-    console.log(value);
-
-    value = value.replaceAll(' ', '').replaceAll(')', '').replaceAll('(', '');
-
-    let [left, right] = value.split(',');
-    if (!left.match('[a-zA-Z]+')) return;
-    if (isNaN(right)) return;
-
-    target.value = left;
-    const li = target.closest('li');
-    const tValue = li.querySelector('#tValue');
-    tValue.value = right;
-
-    innerTarget();
-    targets.scrollTop = targets.scrollHeight;
-  }, 0);
+  nodesToRemove.forEach((node) => {
+    targets.removeChild(node);
+  });
 };
+
+window.addEventListener('paste', (e) => {
+  e.stopPropagation();
+  e.preventDefault();
+
+  const clipboardData = e.clipboardData || window.clipboardData;
+  const pastedData = clipboardData.getData('Text');
+
+  const rSplitted = pastedData
+    .split(')')
+    .filter((val) => val.includes('(') && val.includes(','))
+    .map((val) => {
+      let rsVal = val.substring(val.indexOf('(') + 1);
+      return rsVal.replaceAll(' ', '');
+    })
+    .filter((val) => {
+      const splitted = val.split(',');
+      if (splitted.length !== 2) return false;
+
+      const [left, right] = splitted;
+      if (!left || isNaN(right)) return false;
+
+      return true;
+    })
+    .map((val) => val.split(','));
+
+  reloadTargets();
+
+  rSplitted.forEach((arr) => {
+    const target = innerTarget();
+    const tValue = target.querySelector('#tValue');
+    const tName = target.querySelector('#tName');
+
+    tName.value = arr[0];
+    tValue.value = parseInt(arr[1]);
+  });
+});
