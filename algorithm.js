@@ -91,6 +91,16 @@ const resolve = (ipV4, networkMask, targets, { sizeSort, lexSort }) => {
     sortByLex();
   };
 
+  const calculateSum = () => {
+    let networkSizeSum = 0;
+    result.forEach((row) => {
+      const rowNetworkSize = row.slice(-1).pop();
+      networkSizeSum += rowNetworkSize;
+    });
+
+    return networkSizeSum;
+  };
+
   sortTargets();
   const result = [];
   const IP = splitIP();
@@ -105,6 +115,9 @@ const resolve = (ipV4, networkMask, targets, { sizeSort, lexSort }) => {
     result.push([name, value, sAddress, bAddress, maskLength, networkSize]);
     IP.increment();
   });
+
+  const networkSum = calculateSum();
+  result.push(['', '', '', '', '', networkSum]);
 
   showResult(result);
 };

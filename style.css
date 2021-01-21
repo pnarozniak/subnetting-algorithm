@@ -80,9 +80,11 @@ input[type='submit']:hover {
 
 #targets {
   margin-top: 2rem;
-  padding: 0;
+  padding: 1rem 0;
   list-style: none;
   width: 100%;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 #targets li {

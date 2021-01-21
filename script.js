@@ -42,8 +42,8 @@ const innerTarget = () => {
     let targetValue = '';
     if (id == '2') {
       targetName = `
-      <div style="position: relative">
-        <input type="text" id="tName" required>
+      <div style="position: relative" id="test">
+        <input type="text" id="tName" onpaste="nameInputPaste(event)" required>
         <label for="tName" class="absolute-label">Name</label>
       </div>`;
       targetValue = `
@@ -52,7 +52,7 @@ const innerTarget = () => {
         <label for="tValue" class="absolute-label">Value</label>
       </div>`;
     } else {
-      targetName = `<input type="text" id="tName" required>`;
+      targetName = `<input type="text" id="tName" onpaste="nameInputPaste(event)" required>`;
       targetValue = `<input type="number" id="tValue" required>`;
     }
 
@@ -92,4 +92,30 @@ const showResult = (result) => {
 const closeResult = () => {
   resultContainer.style.display = 'none';
   resultContainer.querySelector('tbody').innerHTML = '';
+};
+
+const nameInputPaste = (e) => {
+  setTimeout(() => {
+    const { target } = e;
+    let { value } = target;
+    const lIndex = value.indexOf('(');
+    const rIndex = value.indexOf(')');
+
+    value = value.substring(lIndex, rIndex);
+    console.log(value);
+
+    value = value.replaceAll(' ', '').replaceAll(')', '').replaceAll('(', '');
+
+    let [left, right] = value.split(',');
+    if (!left.match('[a-zA-Z]+')) return;
+    if (isNaN(right)) return;
+
+    target.value = left;
+    const li = target.closest('li');
+    const tValue = li.querySelector('#tValue');
+    tValue.value = right;
+
+    innerTarget();
+    targets.scrollTop = targets.scrollHeight;
+  }, 0);
 };
