@@ -1,5 +1,3 @@
-# network-division-algorythm
-
 # Usage guide
 * IPv4 - starting IPv4 address
 * Network mask - network mask length that this address belongs to
